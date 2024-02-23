@@ -2,6 +2,9 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from pathlib import Path
+import glob
+import pandas as p
 import os
 import shutil
 import time
@@ -27,8 +30,24 @@ class empiezo:
             print(bemvindo_bb)
 
             
-            self.drive = Chrome()
+        
+        
+        def le_diretorio_e_planilha(self):
+            
+            caminho_absoluto_saj_ = Path.cwd()
+            Processos_ = 'processos.xlsx'
+            Caminho_Mais_Pasta_saj_ = caminho_absoluto_saj_ / Processos_
 
+            self.ListaProcessos_ = Caminho_Mais_Pasta_saj_
+            
+            # self.processos = p.read_excel(self.ListaProcessos_)
+       
+        
+            # for resultado in self.processos['PROCESSO TXT']:
+                
+            #   ...
+                
+                                       
         
         def verifica_se_Existe(self):
                
@@ -73,6 +92,9 @@ class empiezo:
                     
         
         def Login_Saj(self):
+            
+                self.drive = Chrome()
+    
 
                 self.drive.get('https://saj.pgfn.fazenda.gov.br/saj/login.jsf?dswid=982')
                 
@@ -99,9 +121,26 @@ class empiezo:
                 botao_consulta = self.drive.find_element(By.XPATH, '//*[@id="j_idt15:formMenus:menuProcessosPendentes"]/span').click() # PEGA O ITEM DA LISTA >>> Processo
                 time.sleep(7)
         
-        def Meio(self):
+        def Parte_Consulta_Processo(self):
+            
+                botao_executa_tarefa = self.drive.find_element(By. XPATH, '//*[@id="j_idt551:mbExecutarTarefa_button"]/span[2]').click()
+                
+                time.sleep(1)
+                
+                botao_distribuir_procurador = self.drive.find_elements(By. XPATH, '//*[@id="j_idt551:menuDistribuirProcuradores"]/span')[0].click()
+                
+                time.sleep(5)
+                
+                self.le_diretorio_e_planilha()
+                
+                for processos in p.read_excel(self.ListaProcessos_):
+                    
+                    print(processos)
+            
+           
+                
 
-                pass
+              
         
         def Noite(self):
 
@@ -109,8 +148,10 @@ class empiezo:
         
 
 cl = empiezo()
-cl.Login_Saj()
-
+# cl.verifica_se_Existe()
+# cl.Login_Saj()
+# cl.Parte_Consulta_Processo()
+cl.le_diretorio_e_planilha()
 
 
         
