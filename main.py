@@ -104,7 +104,7 @@ class empiezo:
                 
                 campo_senha = self.drive.find_element(By.ID, "frmLogin:password")
 
-                campo_login.send_keys("44355326896")
+                campo_login.send_keys("*****")
                 
                 campo_senha.send_keys("Pgfn@1234")
 
