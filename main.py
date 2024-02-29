@@ -15,7 +15,7 @@ class empiezo:
 
         def __init__(self) -> None:
             
-            bemvindo_bb = '''
+            bemvindo = '''
                 +===========================================================================+
                 |             BEM VINDO,  Ao Robô, PSE FISCAL FGTS                          |
                 |                                                                           |
@@ -27,10 +27,16 @@ class empiezo:
                 | Dev:  AdrianoAngioletto                                                   |
                 +===========================================================================+
                 '''
-            print(bemvindo_bb)
+            print(bemvindo)
 
             
+        def CriaELemento(self, valor, Element=By.XPATH,):
+                                                     
+            PegaElemento = self.drive.find_element(Element, valor)
+                
+            return PegaElemento
         
+
         
         def le_diretorio_e_planilha(self):
             
@@ -99,52 +105,53 @@ class empiezo:
                 self.drive.get('https://saj.pgfn.fazenda.gov.br/saj/login.jsf?dswid=982')
                 
                 time.sleep(2)
+
+                self.CriaELemento("frmLogin:username", By.ID)
                 
-                campo_login = self.drive.find_element(By.ID, "frmLogin:username")
+                campo_login = self.CriaELemento("frmLogin:username", By.ID)
                 
-                campo_senha = self.drive.find_element(By.ID, "frmLogin:password")
+                campo_senha = self.CriaELemento("frmLogin:password", By.ID)
 
                 campo_login.send_keys("*****")
                 
-                campo_senha.send_keys("Pgfn@1234")
+                campo_senha.send_keys("******")
 
-                botao_ok = self.drive.find_element(By.ID, "frmLogin:entrar")
+                botao_ok = self.CriaELemento("frmLogin:entrar", By.ID)
+
                 time.sleep(2)
+
                 botao_ok.click()
+
                 time.sleep(3)
 
-                botao_processo = self.drive.find_element(By.CLASS_NAME, "ui-menuitem-text")  # PEGA  ID DA LISTA > PROCESS
+                botao_processo = self.CriaELemento("ui-menuitem-text", By.CLASS_NAME)   # PEGA  ID DA LISTA > PROCESS
                 
                 ActionChains(self.drive).move_to_element(botao_processo).perform() # MOVE MOUSE ATÉ A LISTA
                 time.sleep(1) # TEMPO NECESSÁRIO
 
-                botao_consulta = self.drive.find_element(By.XPATH, '//*[@id="j_idt15:formMenus:menuProcessosPendentes"]/span').click() # PEGA O ITEM DA LISTA >>> Processo
+                botao_consulta = self.CriaELemento('//*[@id="j_idt15:formMenus:menuProcessosPendentes"]/span').click() # PEGA O ITEM DA LISTA >>> Processo
+                
                 time.sleep(7)
         
         def Parte_Consulta_Processo(self):
             
-                botao_executa_tarefa = self.drive.find_element(By. XPATH, '//*[@id="j_idt551:mbExecutarTarefa_button"]/span[2]').click()
+                botao_executa_tarefa = self.CriaELemento('//*[@id="j_idt551:mbExecutarTarefa_button"]/span[2]').click()
                 
                 time.sleep(1)
                 
-                botao_distribuir_procurador = self.drive.find_elements(By. XPATH, '//*[@id="j_idt551:menuDistribuirProcuradores"]/span')[0].click()
+                botao_distribuir_procurador =  self.CriaELemento('//*[@id="j_idt551:menuDistribuirProcuradores"]/span')[0].click() 
                 
                 time.sleep(5)
                 
                 self.le_diretorio_e_planilha()
                 
-                for processos in p.read_excel(self.ListaProcessos_):
+                for processos in p.read_excel(self.ListaProcessos_): # implementando após instruções
                     
                     print(processos)
             
            
                 
 
-              
-        
-        def Noite(self):
-
-                pass
         
 
 cl = empiezo()
